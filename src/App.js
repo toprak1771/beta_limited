@@ -66,31 +66,32 @@ function App() {
 
   return (
     <div className="container mx-auto p-4 space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Transaction Analyzer</h1>
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded flex items-center"
-          onClick={() => inputRef.current.click()}
-        >
-          <Upload className="w-4 h-4 mr-2" />
-          Upload CSV
-        </button>
-        <input
-          ref={inputRef}
-          className="hidden"
-          type="file"
-          accept=".csv"
-          onChange={handleFileSelected}
-        />
+      <div className="border-b pb-2">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-semibold">Transaction Analyzer</h1>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded flex items-center"
+            onClick={() => inputRef.current.click()}
+          >
+            <Upload className="w-4 h-4 mr-2" />
+            Upload CSV
+          </button>
+          <input
+            ref={inputRef}
+            className="hidden"
+            type="file"
+            accept=".csv"
+            onChange={handleFileSelected}
+          />
+        </div>
+        <h1 className="text-xs text-end">{csvFile?.name}</h1>
       </div>
-      {console.log(user, detectedPatterns, normalization)}
-      <h1 className="text-xs text-end">{csvFile?.name}</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <MetricCard title="Total Spent" value="$955.83" />
-        <MetricCard title="Transactions" value="26" />
-        <MetricCard title="Avg. Transaction" value="$36.76" />
-        <MetricCard title="Merchants" value="12" />
+        <MetricCard title="Total Spend" value={`${user?.total_spend ? "$" + user?.total_spend : ""}`} />
+        <MetricCard title="Transactions" value={user?.transactions} />
+        <MetricCard title="Avg. Transaction" value={`${user?.average_transactions ? "$" + user?.average_transactions : ""}`} />
+        <MetricCard title="Merchants" value={user?.merchants} />
       </div>
 
       <div>
@@ -122,9 +123,11 @@ function App() {
           </div>
         )}
         {activeTab === "merchant-analysis" ? (
+          normalization.length > 0 &&
           <MerchantComponent data={normalization} />
         ) : (
-          <PatternDetectionComponent />
+          detectedPatterns.length > 0 &&
+          <PatternDetectionComponent data={detectedPatterns} />
         )}
       </div>
     </div>
