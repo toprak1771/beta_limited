@@ -1,10 +1,10 @@
 import axios from "axios"
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export default class AxiosService {
-    apiUrl = "http://localhost:5000/api/"
-
+    
     uploadCsv(data) {
-        return axios.post(this.apiUrl + "upload", data, {
+        return axios.post(apiUrl + "upload", data, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }
@@ -12,14 +12,14 @@ export default class AxiosService {
     }
 
     getByUser() {
-        return axios.get(this.apiUrl + "user/getBy")
+        return axios.get(apiUrl + "user/getBy")
     }
 
     getDetectedPatterns(){
-        return axios.get(this.apiUrl + "analyze/patterns")
+        return axios.get(apiUrl + "analyze/patterns")
     }
 
     getNormalization(){
-        return axios.get(this.apiUrl + "analyze/merchant")
+        return axios.get(apiUrl + "analyze/merchant")
     }
 }
